@@ -1,0 +1,60 @@
+.icon-case {
+	font-size: 40px;
+	margin-bottom: 9px;
+}
+
+.shadows {
+	-webkit-box-shadow: 0px 10px 10px 2px rgba(0, 0, 0, 0.5);
+	-moz-box-shadow: 0px 10px 10px 2px rgba(0, 0, 0, 0.5);
+	box-shadow: 0px 10px 10px 2px rgba(0, 0, 0, 0.5);
+}
+
+.center {
+	justify-content: center;
+}
+
+.number-case {
+	font-size: 20px;
+	font-weight: bold;
+	color: #ffffff;
+}
+
+.flag {
+	margin: 5px;
+}
+
+.alert-info {
+	color: #0c5460;
+	background-color: #1eb3cc;
+	border-color: transparent!important;
+}
+
+.alert-dark{
+	color: #1b1e21;
+	background-color: #5c6771;
+	border-color: transparent!important;
+}
+
+.alert-secondary {
+	color: #383d41;
+	background-color: #8c9aa5;
+	border-color: transparent!important;
+}
+
+.alert-success{
+	color: #155724;
+	background-color: #33c353;
+	border-color: transparent!important;
+}
+
+.alert-warning{
+	color: rgb(192, 86, 33);
+	background-color: rgb(237, 137, 54);
+	border-color: transparent!important;
+}
+
+.alert-danger{
+	color: #721c24;
+	background-color: #dc3444;
+	border-color: transparent!important;
+}

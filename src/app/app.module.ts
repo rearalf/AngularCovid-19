@@ -8,9 +8,11 @@ import { InicioComponent } from './components/inicio/inicio.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { CountrieComponent } from './components/countrie/countrie.component';
 
+import { ChartsModule } from 'ng2-charts';
+
 @NgModule({
 	declarations: [ AppComponent, InicioComponent, MenuComponent, CountrieComponent ],
-	imports: [ BrowserModule, AppRoutingModule, HttpClientModule ],
+	imports: [ BrowserModule, AppRoutingModule, HttpClientModule, ChartsModule ],
 	providers: [],
 	bootstrap: [ AppComponent ],
 })

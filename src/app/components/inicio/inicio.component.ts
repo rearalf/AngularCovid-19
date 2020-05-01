@@ -49,21 +49,21 @@ export class InicioComponent implements OnInit {
 			this.countries.sort((a, b) => a.latest_data.confirmed - b.latest_data.confirmed);
 			this.noTouchCountries.sort((a, b) => a.latest_data.confirmed - b.latest_data.confirmed);
 
-			for (let i = 0; i < this.countries.length; i++) {
-				/* 
+			/* for (let i = 0; i < this.countries.length; i++) {
+				
 					Con ayuda del for se recorre todo el arreglo para que se el pase como parametros 
 					un campo de los objetos y se retorne para luego se agrege un campo nuevo en el arreglo 
 					con el dato.
-				*/
+				
 				this.allCountries.capturarPais(this.countries[i].code).subscribe(res => {
-					/* 
+					 
 						La información que retorna es un objeto y un campo de ese objeto es incluido en el 
 						objeto que va pasando en el for 
-					*/
+					
 					this.countries[i].flag = res.flag;
 					this.noTouchCountries[i].flag = res.flag;
 				});
-			}
+			} */
 		});
 	}
 

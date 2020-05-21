@@ -10,51 +10,73 @@
             <div class="alert alert-info text-center shadows" role="alert">
                 <i class="far fa-calendar-alt icon-case"></i>
                 <h5>Last Updated Date</h5>
-                <span class="number-case"> {{ timeLine.updated_at | date }} </span>
+                <span *ngIf="timeLine != undefined; else elseTimeLine" class="number-case">
+                    {{ timeLine.updated_at | date }}
+                </span>
             </div>
         </div>
         <div class="col-sm-6 col-md-4 col-lg-4 col-xl-4">
             <div class="alert alert-dark text-center shadows" role="alert">
                 <i class="fas fa-hospital-alt icon-case"></i>
-                
                 <h5>Case Confirmed</h5>
-                <span class="number-case"> {{ timeLine.confirmed }} </span>
+                <span *ngIf="timeLine != undefined; else elseTimeLine" class="number-case">
+                    {{ timeLine.confirmed }}
+                </span>
             </div>
         </div>
         <div class="col-sm-6 col-md-4 col-lg-4 col-xl-4">
             <div class="alert alert-secondary text-center shadows" role="alert">
                 <i class="fas fa-procedures icon-case"></i>
                 <h5>Case Active</h5>
-                <span class="number-case"> {{ timeLine.active }} </span>
+                <span *ngIf="timeLine != undefined; else elseTimeLine" class="number-case">
+                    {{ timeLine.active }}
+                </span>
             </div>
         </div>
         <div class="col-sm-6 col-md-4 col-lg-4 col-xl-4">
             <div class="alert alert-success text-center shadows" role="alert">
                 <i class="fas fa-heartbeat icon-case"></i>
                 <h5>Case Recovered</h5>
-                <span class="number-case"> {{ timeLine.recovered }} </span>
+                <span *ngIf="timeLine != undefined; else elseTimeLine" class="number-case">
+                    {{ timeLine.recovered }}
+                </span>
             </div>
         </div>
         <div class="col-sm-6 col-md-4 col-lg-4 col-xl-4">
             <div class="alert alert-warning text-center shadows" role="alert">
                 <i class="fas fa-exclamation-triangle icon-case"></i>
                 <h5>Case Critical</h5>
-                <span class="number-case"> {{ latest_data.critical }} </span>
+                <span *ngIf="timeLine != undefined; else elseTimeLine" class="number-case">
+                    {{ latest_data.critical }}
+                </span>
             </div>
         </div>
         <div class="col-sm-6 col-md-4 col-lg-4 col-xl-4">
             <div class="alert alert-danger text-center shadows" role="alert">
                 <i class="fas fa-skull-crossbones icon-case"></i>
                 <h5>Case Deaths</h5>
-                <span class="number-case"> {{ timeLine.deaths }} </span>
+                <span *ngIf="timeLine != undefined; else elseTimeLine" class="number-case">
+                    {{ timeLine.deaths }}
+                </span>
             </div>
         </div>
     </div>
 
+    <ng-template #elseTimeLine>
+        <span class="number-case"> 0 </span>
+    </ng-template>
+
+
     <div class="row mt-5">
-        <div class="col-xl-12 col-sm-12 col-md-12 col-lg-12 chart-wrapper">
+        <div class="col-xl-5 col-sm-12 col-md-12 col-lg-5 chart-wrapper">
+            <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType"
+                [options]="pieChartOptions" [colors]="pieChartColors" [legend]="pieChartLegend">
+            </canvas>
+        </div>
+
+        <div class="col-xl-7 col-sm-12 col-md-12 col-lg-7 chart-wrapper">
             <canvas baseChart [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions"
-                [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType" [plugins]="lineChartPlugins">
+                [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType">
             </canvas>
         </div>
     </div>

@@ -1,5 +1,5 @@
 <main class="container mt-4">
-    <h1>Paises mas contagiados</h1>
+    <h1>About the covid-19</h1>
     <div class="row mt-5">
         <div class="col-sm-6 col-md-3 col-lg-3 col-xl-3">
             <div class="alert alert-dark text-center shadows" role="alert">
@@ -31,36 +31,62 @@
         </div>
     </div>
     <div class="row mt-5">
+        <div class="col-xl-12 col-sm-12 col-md-12 col-lg-12 chart-wrapper">
+            <canvas baseChart [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions"
+                [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType">
+            </canvas>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-12">
+            <h2>Most infected countries</h2>
+        </div>
         <div class="col-12">
             <div class="form-group">
-                <label>Buscar País</label>
+                <label>Search country</label>
                 <input type="text" (input)="buscarPais($event.target.value)" class="form-control"
-                    placeholder="Buscar Pais">
+                    placeholder="Search country">
             </div>
         </div>
     </div>
     <table class="mt-4 table table-striped table-bordered table-hover table-responsive-sm table-responsive-md">
         <thead class="thead-dark">
             <tr class="text-center">
-                <th scope="col">Position</th>
+                <!-- <th scope="col">Position</th> -->
                 <!-- <th scope="col">Flag</th> -->
                 <th scope="col">Country</th>
                 <th scope="col">Total Cases</th>
+                <th scope="col">New Cases</th>
                 <th scope="col">Total Deaths</th>
+                <th scope="col">New Deaths</th>
                 <th scope="col">Total Recovered</th>
-                <th scope="col">Opción</th>
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let countrie of countries.reverse().slice(0,10);let indice = index">
-                <td class="text-center"> {{indice + 1}} </td>
-                <!-- <td class="text-center"> <img width="50px" [src]="this.countrie.flag" alt=""> </td> -->
-                <td class="text-center"> {{countrie.name}} </td>
-                <td class="text-center"> {{countrie.latest_data.confirmed}} </td>
-                <td class="text-center"> {{countrie.latest_data.deaths}} </td>
-                <td class="text-center"> {{countrie.latest_data.recovered}} </td>
-                <td> <button class="btn btn-primary" [routerLink]="['/coutrie', countrie.code]">Information</button>
-                </td>
+            <!-- let countrie of countries.reverse().slice(0,10);let indice = index -->
+            <tr *ngFor="let countrie of countries.reverse()">
+                <div class="link-country" [routerLink]="['/coutrie', countrie.code]">
+                    <!-- <td class="text-center"> {{indice + 1}} </td> -->
+                    <!-- <td class="text-center"> <img width="50px" [src]="this.countrie.flag" alt=""> </td> -->
+                    <td class="text-center"> {{countrie.name}} </td>
+                    <td class="text-center"> {{countrie.latest_data.confirmed}} </td>
+                    <div *ngIf="countrie.today.confirmed != 0; then thenConfirmed else elseConfirmed"></div>
+                    <ng-template #thenConfirmed>
+                        <td class="text-center text-secondary">+ {{countrie.today.confirmed}} </td>
+                    </ng-template>
+                    <ng-template #elseConfirmed>
+                        <td class="text-center"> {{countrie.today.confirmed}} </td>
+                    </ng-template>
+                    <td class="text-center"> {{countrie.latest_data.deaths}} </td>
+                    <div *ngIf="countrie.today.deaths != 0; then thenDeaths else elseDeadths"></div>
+                    <ng-template #thenDeaths>
+                        <td class="text-center text-danger">+ {{countrie.today.deaths}} </td>
+                    </ng-template>
+                    <ng-template #elseDeadths>
+                        <td class="text-center"> {{countrie.today.deaths}} </td>
+                    </ng-template>
+                    <td class="text-center"> {{countrie.latest_data.recovered}} </td>
+                </div>
             </tr>
         </tbody>
     </table>

@@ -1,7 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { AllCountriesService } from 'src/app/services/all-countries.service';
 import { Router } from '@angular/router';
+// Sevices
+import { AllCountriesService } from 'src/app/services/all-countries.service';
+// Models
 import { timeline } from 'src/app/models/timelineInfected';
+// Charts
+import { ChartDataSets } from 'chart.js';
+import { Color, Label } from 'ng2-charts';
 
 @Component({
 	selector: 'app-inicio',
@@ -9,43 +14,71 @@ import { timeline } from 'src/app/models/timelineInfected';
 	styleUrls: [ './inicio.component.css' ],
 })
 export class InicioComponent implements OnInit {
-	constructor(private allCountries: AllCountriesService, private router: Router) {}
+	constructor(private countryAll: AllCountriesService, private router: Router) {}
 
-	/* Declarando variables para guardar los datos datos */
-	// Contiene todos los datos de contagiados por país.
+	/* 
+	*	Variable group 
+	*/
+	// Save list of countries with contagions
 	countries = new Array();
-	// Contiene todos los datos de contagiados por país.
+	// Save list of countries with contagions searched for
 	noTouchCountries = new Array();
-	// Contiene la información de contagios a nivel mundial
+	// Save the information of infections worldwide
 	information: timeline = new timeline();
 
+	/* 
+	*	Variables for the graph
+	*/
+	allActive = new Array();
+	allDeaths = new Array();
+	allRecovered = new Array();
+	date = new Array();
+
 	ngOnInit(): void {
-		// Se ejecuta la método para los datos de contagios a nivel mundial
+		// Method for global infection data
 		this.contagioGeneral();
-		// Se ejecuta la método para los datos de contagios por país
+		// The method is run for infection data by country
 		this.contagioPorPais();
 	}
 
-	// Método para datos de contagio a nivel mundial
+	// Method for global infection data
 	contagioGeneral() {
 		// Función con parametro ubicada en el servicio y que trae un arreglo
-		this.allCountries.capturarPaisContagiado('/timeline').subscribe(res => {
+		this.countryAll.captureContagiousCountry('/timeline').subscribe(res => {
+			// Save the information of infections worldwide
 			this.information = res.data[0];
+			// ForEach to save all the data in the graph variables
+			res.data.forEach(item => {
+				this.date.push(item.date);
+				this.allActive.push(item.active);
+				this.allDeaths.push(item.deaths);
+				this.allRecovered.push(item.recovered);
+			});
+			// The arrangement is ordered to show it on the graph
+			this.allActive.sort((a, b) => a - b);
+			this.allDeaths.sort((a, b) => a - b);
+			this.allRecovered.sort((a, b) => a - b);
+			this.date.reverse();
+			// Cut off part of the date shown on the line graph
+			for (let i = 0; i < this.date.length; i++) {
+				const put = this.date[i].split('-');
+				this.date[i] = `${put[1]}-${put[2]}`;
+			}
 		});
 	}
 
-	// Método para los datos de contagios por país
+	// The method is run for infection data by country
 	contagioPorPais() {
-		// Funcion con parametro ubicado en el sevicio que trae un erreglo de paises contagiados
-		this.allCountries.capturarPaisContagiado('/countries').subscribe(res => {
+		// Function with parameter located in the service that brings a bug of infected countries
+		this.countryAll.captureContagiousCountry('/countries').subscribe(res => {
 			res.data.forEach(element => {
-				// Guarda los datos en las dos variables de arreglos.
+				// Save the data in the two array variables.
 				this.countries.push(element);
-				// Esta varialble nos ayuda en el buscador.
+				// This variable helps us in the search engine.
 				this.noTouchCountries.push(element);
 			});
 
-			// Esta operación ayuda a ordenar los objetos del arreglo por medio de uno de sus campos
+			// This operation helps to sort the objects of the array by means of one of its fields
 			this.countries.sort((a, b) => a.latest_data.confirmed - b.latest_data.confirmed);
 			this.noTouchCountries.sort((a, b) => a.latest_data.confirmed - b.latest_data.confirmed);
 
@@ -55,7 +88,7 @@ export class InicioComponent implements OnInit {
 					un campo de los objetos y se retorne para luego se agrege un campo nuevo en el arreglo 
 					con el dato.
 				
-				this.allCountries.capturarPais(this.countries[i].code).subscribe(res => {
+				this.allCountries.captureCountry(this.countries[i].code).subscribe(res => {
 					 
 						La información que retorna es un objeto y un campo de ese objeto es incluido en el 
 						objeto que va pasando en el for 
@@ -67,25 +100,56 @@ export class InicioComponent implements OnInit {
 		});
 	}
 
-	// Método para buscar país
+	// Country search method
 	buscarPais(event) {
+		// Validate that the variable is not empty
 		if (event != '') {
 			/* 
-				Se a la segunda variable noTouchCountries se le hace el filtro y
-				se guarda en la variable coutries quitando todos los demas valores 
-				que tenia el arreglo.
+			The second variable noTouchCountries is filtered and 
+			is saved in the coutries variable, removing all the other 
+			values that the array had.
 			*/
 			this.countries = this.noTouchCountries.filter(x => {
 				return x.name.toLocaleLowerCase().includes(event.toLocaleLowerCase());
 			});
 		}
 		else {
+			// If the variable is empty
 			/* 
-				Se iguala la variable noTouchCountries con countries por que noTouchCountries 
-				contiene el arreglo completo de paises contagiados mientras que countries se 
-				cambio el valor cuando entro en el if.
+				Variable noTouchCountries equals countries because noTouchCountries
+				contains the complete array of countries infected while countries are
+				I change the value when I enter the if.
 			*/
 			this.countries = this.noTouchCountries;
 		}
 	}
+
+	/*
+	*	LINE CHART
+	*/
+	lineChartLegend = true;
+	lineChartType = 'line';
+	lineChartOptions = {
+		responsive: true,
+	};
+	lineChartLabels: Label[] = this.date;
+	lineChartData: ChartDataSets[] = [
+		{ data: this.allActive, label: 'Cases Activos' },
+		{ data: this.allDeaths, label: 'Cases Deaths' },
+		{ data: this.allRecovered, label: 'Cases Recovered' },
+	];
+	lineChartColors: Color[] = [
+		{
+			borderColor: 'rgb(92, 103, 113)',
+			backgroundColor: 'rgb(92, 103, 113)',
+		},
+		{
+			borderColor: 'rgb(220, 52, 68)',
+			backgroundColor: 'rgb(220, 52, 68)',
+		},
+		{
+			borderColor: 'rgb(51, 195, 83)',
+			backgroundColor: 'rgb(51, 195, 83)',
+		},
+	];
 }

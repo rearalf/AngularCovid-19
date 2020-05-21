@@ -42,3 +42,12 @@
 .alert {
 	height: 90%;
 }
+
+.link-country {
+	cursor: pointer;
+	display: contents;
+}
+
+.table-hover tbody tr:hover {
+	background-color: rgba(0, 0, 0, 0.25);
+}

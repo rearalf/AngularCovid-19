@@ -4,29 +4,29 @@
         <div class="col-sm-6 col-md-3 col-lg-3 col-xl-3">
             <div class="alert alert-dark text-center shadows" role="alert">
                 <i class="fas fa-hospital-alt icon-case"></i>
-                <h5>Active</h5>
-                <p class="number-case"> {{ information.active }} </p>
+                <h5>Confirmed Case</h5>
+                <span class="number-case"> {{ information.confirmed | number }} </span>
             </div>
         </div>
         <div class="col-sm-6 col-md-3 col-lg-3 col-xl-3">
             <div class="alert alert-secondary text-center shadows" role="alert">
                 <i class="fas fa-procedures icon-case"></i>
-                <h5>Case Confirmed</h5>
-                <span class="number-case"> {{ information.confirmed }} </span>
+                <h5>Active Case</h5>
+                <p class="number-case"> {{ information.active | number }} </p>
             </div>
         </div>
         <div class="col-sm-6 col-md-3 col-lg-3 col-xl-3">
             <div class="alert alert-danger text-center shadows" role="alert">
                 <i class="fas fa-skull-crossbones icon-case"></i>
-                <h5>Case Deaths</h5>
-                <span class="number-case"> {{ information.deaths }} </span>
+                <h5>Deaths Case</h5>
+                <span class="number-case"> {{ information.deaths | number }} </span>
             </div>
         </div>
         <div class="col-sm-6 col-md-3 col-lg-3 col-xl-3">
             <div class="alert alert-success text-center shadows" role="alert">
                 <i class="fas fa-heartbeat icon-case"></i>
-                <h5>Case Recovered</h5>
-                <span class="number-case"> {{ information.recovered }} </span>
+                <h5>Recovered Case</h5>
+                <span class="number-case"> {{ information.recovered | number }} </span>
             </div>
         </div>
     </div>
@@ -69,23 +69,23 @@
                     <!-- <td class="text-center"> {{indice + 1}} </td> -->
                     <!-- <td class="text-center"> <img width="50px" [src]="this.countrie.flag" alt=""> </td> -->
                     <td class="text-center"> {{countrie.name}} </td>
-                    <td class="text-center"> {{countrie.latest_data.confirmed}} </td>
+                    <td class="text-center"> {{countrie.latest_data.confirmed | number}} </td>
                     <div *ngIf="countrie.today.confirmed != 0; then thenConfirmed else elseConfirmed"></div>
                     <ng-template #thenConfirmed>
-                        <td class="text-center text-secondary">+ {{countrie.today.confirmed}} </td>
+                        <td class="text-center text-secondary">+ {{countrie.today.confirmed | number}} </td>
                     </ng-template>
                     <ng-template #elseConfirmed>
-                        <td class="text-center"> {{countrie.today.confirmed}} </td>
+                        <td class="text-center"> {{countrie.today.confirmed | number}} </td>
                     </ng-template>
-                    <td class="text-center"> {{countrie.latest_data.deaths}} </td>
+                    <td class="text-center"> {{countrie.latest_data.deaths | number}} </td>
                     <div *ngIf="countrie.today.deaths != 0; then thenDeaths else elseDeadths"></div>
                     <ng-template #thenDeaths>
-                        <td class="text-center text-danger">+ {{countrie.today.deaths}} </td>
+                        <td class="text-center text-danger">+ {{countrie.today.deaths | number}} </td>
                     </ng-template>
                     <ng-template #elseDeadths>
-                        <td class="text-center"> {{countrie.today.deaths}} </td>
+                        <td class="text-center"> {{countrie.today.deaths | number}} </td>
                     </ng-template>
-                    <td class="text-center"> {{countrie.latest_data.recovered}} </td>
+                    <td class="text-center"> {{countrie.latest_data.recovered | number}} </td>
                 </div>
             </tr>
         </tbody>

@@ -57,7 +57,6 @@ export class CountrieComponent implements OnInit {
 			this.country = res.data;
 			// Save an object with contagion information updated every day
 			this.timeLine = res.data.timeline[0];
-			console.log(this.timeLine);
 			// Save an object with total contagion information
 			this.latest_data = res.data.latest_data;
 
